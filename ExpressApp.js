@@ -15,13 +15,11 @@ initializeApp({
 
 const db = getFirestore();
 
-// Serve the static files from the React app
+// Setup Middleware Express App
 app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.json());
 
 // An API route
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express' });
-});
 
 app.get('/api/test-data', async (req, res) => {
   try {
@@ -43,6 +41,7 @@ app.get('/api/test-data', async (req, res) => {
 app.post('/api/post-data', async (req, res) => {
   try {
     const data = req.body;
+    // console.log(data)
     const docRef = await db.collection('users').doc('MockUpUID2').set(data);
     res.json({id: docRef.id});
   }
