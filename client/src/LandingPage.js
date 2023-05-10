@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import Navigation from './components/NavBar.js';
 import axios from 'axios';
 import Navigation from './NavBar.js';
 import './LandingPage.css';

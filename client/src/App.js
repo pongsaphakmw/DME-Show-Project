@@ -1,7 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
+import LandingPageApp from './LandingPage';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import SignUpPageApp from './components/SignUpPage';
+import SignInPageApp from './components/SignInPageApp';
+import Home from './components/HomePage';
 
 function MyButton() {
   const data = {
@@ -23,7 +28,7 @@ function MyButton() {
   );
 }
 
-function App() {
+function TestApp() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -65,6 +70,21 @@ function App() {
       </header>
     </div>
   );
+}
+
+function App(){
+  return (
+    <div>
+      <Router>
+          <Routes>
+              <Route path="/" exact element={<LandingPageApp/>} />
+              <Route path="/sign-up" element={<SignUpPageApp/>} />
+              <Route path='/sign-in' element={<SignInPageApp/>} />
+              <Route path='/home' element={<Home/>} />
+          </Routes>
+      </Router>
+    </div>
+  )
 }
 
 export default App;

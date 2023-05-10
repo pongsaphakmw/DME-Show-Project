@@ -1,4 +1,3 @@
-import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -15,14 +14,16 @@ function Home() {
         <div className="App">
             <header className="App-header">
                 <h1>Home</h1>
-                <p>
-                    {data.map(item => (
-                        <div key={item.id}>
-                            <h2>{item.title}</h2>
-                            <p>{item.body}</p>
-                        </div>
+                {data.length === 0 ? (
+                    <p>No data to display</p>
+                ) : (
+                    <ul>
+                    {data.map((item) => (
+                        <li key={item.id}>{item.name} {item.email}</li>
                     ))}
-                </p>
+                    </ul>
+                )}
+
             </header>
         </div>
     );
