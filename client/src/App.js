@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUpPageApp from './components/SignUpPage';
 import SignInPageApp from './components/SignInPageApp';
 import Home from './components/HomePage';
-
+import FooterContribute from './components/Contribute';
 function MyButton() {
   const data = {
     name: 'MockUpName2',
@@ -81,6 +81,9 @@ function App(){
               <Route path="/sign-up" element={<SignUpPageApp/>} />
               <Route path='/sign-in' element={<SignInPageApp/>} />
               <Route path='/home' element={<Home/>} />
+              <Route path='/support' element={<Home/>} />
+              <Route path='/contributor' element={<FooterContribute/>} />
+
           </Routes>
       </Router>
     </div>
