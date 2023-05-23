@@ -25,7 +25,11 @@ function LandingPageApp() {
     handleExpand2 =<div className='line_nav'></div>;
    
   }
-  
+  import SignInForm from './components/SignInForm.js';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
+
   return (
     <div> 
       <Navbar expand={expand} className="mb-3">
@@ -83,7 +87,7 @@ function LandingPageApp() {
             or
             <a className="liner_or"></a>
           </div>
-          
+                      <SignInForm />
           <Button className="box_signin_google mb-3 mt-5 "  variant="outline-dark" type="submit">
            
             <AiFillGoogleCircle  className='incon_people me-2' />
