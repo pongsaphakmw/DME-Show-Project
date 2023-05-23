@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Navigation from './components/NavBar.js';
 import axios from 'axios';
 import './LandingPage.css';
+import SignInForm from './components/SignInForm.js';
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -25,9 +28,6 @@ function LandingPageApp() {
     handleExpand2 =<div className='line_nav'></div>;
    
   }
-  import SignInForm from './components/SignInForm.js';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 
 
   return (
@@ -87,7 +87,6 @@ import { getAnalytics } from "firebase/analytics";
             or
             <a className="liner_or"></a>
           </div>
-                      <SignInForm />
           <Button className="box_signin_google mb-3 mt-5 "  variant="outline-dark" type="submit">
            
             <AiFillGoogleCircle  className='incon_people me-2' />
