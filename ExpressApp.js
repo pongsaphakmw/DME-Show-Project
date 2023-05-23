@@ -58,13 +58,17 @@ app.get('*', (req,res) =>{
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const csrfProtection = csrf({ cookie: true });
+// const cookieSession = require('cookie-session');
 
 app.use(cookieParser());
-app.use(csrfProtection);
+// app.use(csrfProtection);
 
-app.get('/api/auth/csrf-token', (req, res) => {
-  console.log(req.csrfToken());
-  res.json({ csrfToken: req.csrfToken() });
+app.get('/api/auth/csrf-token', csrfProtection, (req, res) => {
+  if (req.session.csrf === undefined) {
+    req.session.csrf = randomBytes(100).toString('base64'); // convert random data to a string
+    return res.status(200).json({ csrfToken: req.session.csrf });
+  }
+  res.status(200).json({ csrfToken: req.session.csrf });
 });
 
 
@@ -114,7 +118,7 @@ app.post('/api/auth/sign-in', csrfProtection, async (req, res) => {
       return res.status(400).json({ error: 'Invalid user information' });
     }
 
-    if (!req.csrfToken || req.csrfToken() !== req.headers['x-csrf-token']) {
+    if (!req.csrfToken || req.csrfToken() === req.headers['x-csrf-token']) {
       return res.status(403).send('Invalid CSRF token');
     }
 
