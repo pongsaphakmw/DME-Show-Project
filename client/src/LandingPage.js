@@ -88,7 +88,7 @@ function LandingPageApp() {
             or
             <a className="liner_or"></a>
           </div>
-            <Footerapp/>          <Button className="box_signin_google mb-3 mt-5 "  variant="outline-dark" type="submit">
+                      <Button className="box_signin_google mb-3 mt-5 "  variant="outline-dark" type="submit">
            
             <AiFillGoogleCircle  className='incon_people me-2' />
             sign in with google
@@ -98,6 +98,7 @@ function LandingPageApp() {
           </Button>
         </Form>
       </div>
+      <Footerapp/>
     </div>
   );
 }

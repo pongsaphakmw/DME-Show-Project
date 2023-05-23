@@ -81,7 +81,7 @@ function App(){
               <Route path="/sign-up" element={<SignUpPageApp/>} />
               <Route path='/sign-in' element={<SignInPageApp/>} />
               <Route path='/home' element={<Home/>} />
-              <Route path='/support' element={<Home/>} />
+              <Route path='/support' element={<Support/>} />
               <Route path='/contributor' element={<FooterContribute/>} />
 
           </Routes>

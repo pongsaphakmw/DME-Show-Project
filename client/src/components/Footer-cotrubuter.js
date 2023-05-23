@@ -8,7 +8,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 function Footerapp() {
     return (
       <Navbar bg="dark" variant="dark" expand="lg">
-        <Navbar.Brand href="/">My App</Navbar.Brand>
+        <Navbar.Brand href="/">Logo</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
