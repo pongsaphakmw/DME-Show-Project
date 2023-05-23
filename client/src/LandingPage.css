@@ -1,0 +1,137 @@
+.Boxuser_password {
+    width: 400px;
+    height: 532px;
+    margin: 0 auto;
+    margin-left: 300px;
+    margin-top: 200px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  }
+  
+Form .box_sizing {
+    box-sizing: border-box ;
+    width: 100%;
+    height: 55px;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #000000;
+    border-radius: 20px ;
+    background: #ffffff;
+}
+.textbox {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #000000;
+}
+
+.textforgotpassword {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center ;
+    text-decoration-line: underline;
+    color: #000000;
+}
+
+
+Form .box_signin{
+   
+    width: 350px;
+    height: 45px;
+    top: 588px;
+    margin-left: 25px;
+    border-radius: 30px ;
+    color:#ffffff;
+    background-color:#F87777;
+    border-color: #F87777;
+    
+}
+.boxNav{
+    box-sizing: border-box;
+    max-width: 100%; 
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+  
+
+}
+.toggle{
+    margin-inline-end:0%;
+}
+.layout_lineror .liner_or{
+    width: 150px;
+    height: 0px;
+    left: 344px;
+    top: 683px;
+
+    border: 1px solid #A39F9F;
+}
+.layout_lineror{
+    padding: 0 2rem;
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+.line_nav{
+    width: 35px;
+    height: 0px;
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    
+    border: 1px solid #878787;
+    transform: rotate(90deg);
+}
+.incon_people{
+    width: 22px;
+    height: 22px;
+    opacity: 0.8;
+    
+}
+
+
+Nav .button {
+    background-color: #ffffff;
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+    border: 1px solid #000000;
+ 
+}
+Nav {
+    background-color: #ffffff;
+}
+Form .box_signin_google{
+    width: 350px;
+    height: 45px;
+    top: 588px;
+    color: #000;
+    margin-left: 25px;
+    background: #ffffff;
+    border-radius: 30px ;
+    border: 1px solid #000000;
+    
+}
+Nav .button_signup {
+    background-color: #ffffff;
+    border: none;
+    color:#F87777;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+    border: 1px solid#F87777;
+ 
+}
