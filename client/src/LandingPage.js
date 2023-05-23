@@ -19,40 +19,50 @@ import{AiFillGoogleCircle} from "react-icons/ai";
 
 function LandingPageApp() {
   const [expand, setExpand] = useState('sm');
-  const handleExpand = () => {
-    setExpand('sm');
-  };
 
+  let handleExpand2 = expand;
+  if (expand){
+    handleExpand2 =<div className='line_nav'></div>;
+   
+  }
+  
   return (
     <div> 
-      <Navbar bg="light" expand={expand} className="mb-3">
+      <Navbar expand={expand} className="mb-3">
         <Container fluid>
-          <Navbar.Brand href="#">Navbar Offcanvas</Navbar.Brand>
-          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
-          <Navbar.Offcanvas
-            id={`offcanvasNavbar-expand-${expand}`}
-            aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-            placement="end"
-          >
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
-                Offcanvas
-              </Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link href="#action1"> 
-                 <BsFillPeopleFill className='incon_people'/>
-                </Nav.Link >
-                <div className='line_nav'></div>
-                <Button  className='button' variant="outline-success me-2" >sign in</Button>
-                <Button className='button' variant="outline-success">sing up</Button>
-              </Nav>
-            </Offcanvas.Body>
-          </Navbar.Offcanvas>
-        </Container>
+          <Navbar.Brand href="#">DME SHOW CASE</Navbar.Brand>
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand} ` } />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Navbar.Offcanvas
+                id={`offcanvasNavbar-expand-${expand}`}
+                aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+                placement="end"
+                
+                >
+                  <Offcanvas.Header closeButton>
+                    <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} href="/home">
+                        DME SHOW CASE
+                    </Offcanvas.Title>
+                  </Offcanvas.Header>
+                  <Offcanvas.Body>
+                    <Nav className="justify-content-end flex-grow-1 pe-3 ">
+                      <Nav.Link href="#action1"> 
+                      <BsFillPeopleFill className='incon_people'/>
+                      </Nav.Link >
+                      
+                      {handleExpand2}
+                      
+                      <Button  className='button ' variant="outline-dark" href="/sign-in">sign in</Button>
+                      <Nav className='mb-1'></Nav>
+                      <Button className='button_signup' variant="outline-danger" href="/sign-up">sign up</Button>
+                    </Nav>
+                  </Offcanvas.Body>
+                </Navbar.Offcanvas>
+              </Navbar.Collapse>
+          </Container>
+        
       </Navbar>
-      <h1 className="title">Welcome</h1>
+      
       <div className="Boxuser_password">
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -65,7 +75,7 @@ function LandingPageApp() {
             <Form.Control type="password" className="box_sizing" />
             <Form.Text className="textforgotpassword">Forgot your password?</Form.Text>
           </Form.Group>
-          <Button className="box_signin mb-5" variant="primary" type="submit">
+          <Button className="box_signin mb-5" variant="danger" type="submit">
             Sign In
           </Button>
           <div className="layout_lineror">
@@ -74,13 +84,13 @@ function LandingPageApp() {
             <a className="liner_or"></a>
           </div>
           
-          <Button className="box_signin mb-3 mt-5 " variant="primary" type="submit">
+          <Button className="box_signin_google mb-3 mt-5 "  variant="outline-dark" type="submit">
            
-            <AiFillGoogleCircle  className='incon_people'/>
+            <AiFillGoogleCircle  className='incon_people me-2' />
             sign in with google
           </Button>
-          <Button className="box_signin" variant="primary" type="submit">
-            Sign In
+          <Button className="box_signin_google"  variant="outline-dark" type="submit" >
+            Sign Out
           </Button>
         </Form>
       </div>
