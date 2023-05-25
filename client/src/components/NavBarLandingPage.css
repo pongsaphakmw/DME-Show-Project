@@ -1,0 +1,62 @@
+
+.boxNav{
+    box-sizing: border-box;
+    max-width: 100%; 
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+  
+
+}
+
+
+.line_nav{
+    width: 35px;
+    height: 0px;
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    
+    border: 1px solid #878787;
+    transform: rotate(90deg);
+}
+.incon_people{
+    width: 22px;
+    height: 22px;
+    opacity: 0.8;
+    
+}
+
+
+Nav .button {
+    background-color: #ffffff;
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+    border: 1px solid #000000;
+ 
+}
+Nav {
+    background-color: #ffffff;
+}
+
+Nav .button_signup {
+    background-color: #ffffff;
+    border: none;
+    color:#F87777;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+    border: 1px solid#F87777;
+ 
+}

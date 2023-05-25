@@ -1,0 +1,51 @@
+p.container {
+    margin-top: 40px;
+    width: 460px;
+    height: 600px;
+    background: #ffffff;
+    border-radius: 20px;
+    
+}
+.background {
+    background-color: antiquewhite;
+}
+h1.title {
+    margin-top: 70px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 36px;
+    line-height: 44px;
+
+
+    color: #2C2C2C;
+}
+.Page_Signin {
+    background-color: #F6F1ED;
+    padding-bottom:  10%;
+}
+.container .PositinFooterText{
+    
+    margin-top: 505px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #5f5f5f;
+  
+} 
+.container .PositinFooterText .textbutton {
+    display: flex;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    text-align: center;
+    color: #F87777;
+}
