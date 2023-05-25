@@ -7,6 +7,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUpPageApp from './components/SignUpPage';
 import SignInPageApp from './components/SignInPageApp';
 import Home from './components/HomePage';
+import About from './components/AboutPage';
+import Contributor from './components/ContributorPage';
+import Support from './components/SupportPage';
+import TermPolicy from './components/TermPolicyPage';
+
 
 function MyButton() {
   const data = {
@@ -16,7 +21,7 @@ function MyButton() {
     profileIMG: 'MockUpProfileIMG2',
     detail: 'MockUpDetail2',
   }
-  axios.post('/api/post-data', data)
+  axios.post('/api/test-post-data', data)
   .then(response => {
     console.log('Created document with ID:', response.data.id);
   })
@@ -81,6 +86,11 @@ function App(){
               <Route path="/sign-up" element={<SignUpPageApp/>} />
               <Route path='/sign-in' element={<SignInPageApp/>} />
               <Route path='/home' element={<Home/>} />
+              <Route path='#about' element={<About/>} />
+              <Route path='/support' element={<Support/>} />
+              <Route path='/contributor' element={<Contributor/>} />
+              <Route path='/term-policy' element={<TermPolicy/>} />
+              <Route path='/test' element={<TestApp/>} />
           </Routes>
       </Router>
     </div>

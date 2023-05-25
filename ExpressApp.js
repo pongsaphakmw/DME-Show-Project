@@ -38,6 +38,17 @@ app.get('/api/test-data', async (req, res) => {
   }
 });
 
+app.post('/api/test-post-data', async (req,res) => {
+  try {
+    const data = req.body;
+    const collectionRef =db.collection('test_data').doc('leza').set(data);
+  }
+  catch (eror) {
+    console.error(error);
+    res.status(500).json({error:'Inrernal server error'})
+  }
+});
+
 app.post('/api/post-data', async (req, res) => {
   try {
     const data = req.body;
