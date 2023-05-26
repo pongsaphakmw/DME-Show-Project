@@ -4,6 +4,10 @@ import axios from 'axios';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import firebaseApp from './InitFirebase.js';
 import { useNavigate } from 'react-router-dom';
+import{AiFillGoogleCircle} from "react-icons/ai";
+import '../LandingPage.css';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 function SignInForm() {
   const [email, setEmail] = useState('');
@@ -17,6 +21,8 @@ function SignInForm() {
       try {
         const response = await axios.get('/api/auth/csrf-token');
         const { csrfToken } = response.data;
+        console.log('csrfToken', csrfToken);
+        // console.log('response', response);
         setCsrfToken(csrfToken);
       } catch (error) {
         console.error('Failed to fetch CSRF token:', error);
@@ -42,39 +48,18 @@ function SignInForm() {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const { user } = userCredential;
 
-        // const csrfTokenResponse = await axios.get('/api/auth/csrf-token');
-        // const csrfToken = csrfTokenResponse.data.csrfToken;
-        // console.log(csrfToken);
-
-        // const response = await axios.post(
-        //   '/api/auth/sign-in',
-        //   { user },
-        //   {
-        //     headers: {
-        //       'X-CSRF-Token': csrfToken
-        //     }
-        //   }
-        // );
-
         if (!userCredential) {
           throw new Error('Password is incorrect');
         }
 
-        // if (response && response.data) {
-        //   const { cookies } = response.data;
-        //   // sessionStorage.setItem('token', cookies.session);
-        //   navigate('/home', { token: cookies.session });
-        // } else {
-        //   throw new Error('Invalid response or missing data');
-        // }
-
         if (csrfToken !== undefined) {
+          alert('Sign in successful')
+          // console.log('token', csrfToken)
           navigate('/home', { token: csrfToken });
         } else {
           throw new Error('Invalid response or missing data');
         }
 
-      // Clear the form
       setEmail('');
       setPassword('');
     } catch (error) {
@@ -84,29 +69,48 @@ function SignInForm() {
   };
 
   return (
-    <form onSubmit={handleSignIn}>
-      <input type="hidden" name="_csrf" value={csrfToken} />
-      <h2>Sign In</h2>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+    <div className="Boxuser_password">
+    <Form onSubmit={handleSignIn}>
+    <input type="hidden" name="_csrf" value={csrfToken} />
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label className="textbox">Email or Phone</Form.Label>
+        <Form.Control 
+                      className="box_sizing"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label className="textbox">Password</Form.Label>
+        <Form.Control 
+                        type="password" 
+                        className="box_sizing" 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required/>
+        <Form.Text className="textforgotpassword">Forgot your password?</Form.Text>
+      </Form.Group>
+      <Button className="box_signin mb-5" variant="danger" type="submit">
+        Sign In
+      </Button>
+      <div className="layout_lineror">
+        <a className="liner_or"></a>
+        or
+        <a className="liner_or"></a>
       </div>
-      <div>
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Sign In</button>
-    </form>
+
+      <Button className="box_signin_google mb-3 mt-5 "  variant="outline-dark" type="submit">
+
+        <AiFillGoogleCircle  className='incon_people me-2' />
+        sign in with google
+      </Button>
+      <Button className="box_signin_google"  variant="outline-dark" type="submit" >
+        Sign Up
+      </Button>
+    </Form>
+  </div>
   );
 }
 

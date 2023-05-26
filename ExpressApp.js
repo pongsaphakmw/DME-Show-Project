@@ -4,6 +4,13 @@ const app = express();
 const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
 const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
 const admin = require('firebase-admin');
+const csrf = require('csurf');
+const cookieParser = require('cookie-parser');
+const csrfProtection = csrf({ cookie: true });
+const session = require('express-session');
+const { randomBytes } = require('crypto');
+// const cookieSession = require('cookie-session');
+
 
 // Init Firebase
 const serviceAccount = require('./serviceAccountKey.json');
@@ -18,6 +25,16 @@ const db = getFirestore();
 // Setup Middleware Express App
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(express.json());
+app.use(cookieParser());
+app.use(session({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { 
+    secure: false,
+    maxAge: 24 * 60 * 60 * 1000,
+   }
+}));
 
 // An API route
 
@@ -50,20 +67,11 @@ app.post('/api/post-data', async (req, res) => {
   }
 })
 
-app.get('*', (req,res) =>{
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
-
 // Cookies Handling
-const csrf = require('csurf');
-const cookieParser = require('cookie-parser');
-const csrfProtection = csrf({ cookie: true });
-// const cookieSession = require('cookie-session');
-
-app.use(cookieParser());
 // app.use(csrfProtection);
 
 app.get('/api/auth/csrf-token', csrfProtection, (req, res) => {
+  // console.log('req.session.csrf', req.session.csrf);
   if (req.session.csrf === undefined) {
     req.session.csrf = randomBytes(100).toString('base64'); // convert random data to a string
     return res.status(200).json({ csrfToken: req.session.csrf });
@@ -142,8 +150,6 @@ app.post('/api/auth/sign-in', csrfProtection, async (req, res) => {
   }
 });
 
-
-
 app.post('/api/auth/check-token', async (req, res) => {
   try {
     const { token } = req.body;
@@ -154,6 +160,11 @@ app.post('/api/auth/check-token', async (req, res) => {
     console.error(error);
     res.status(500).json({ error: error.message });
   }
+});
+
+
+app.get('*', (req,res) =>{
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
 

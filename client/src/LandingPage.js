@@ -19,6 +19,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import {BsFillPeopleFill} from "react-icons/bs";
 import Badge from 'react-bootstrap/Badge';
 import{AiFillGoogleCircle} from "react-icons/ai";
+import Footer from './components/Footer';
 
 function LandingPageApp() {
   const [expand, setExpand] = useState('sm');
@@ -97,6 +98,7 @@ function LandingPageApp() {
           </Button>
         </Form>
       </div>
+      <Footer/>
     </div>
   );
 }
