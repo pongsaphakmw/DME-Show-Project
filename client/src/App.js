@@ -10,13 +10,13 @@ import Home from './components/HomePage';
 import FooterContribute from './components/Contribute';
 function MyButton() {
   const data = {
-    name: 'MockUpName2',
-    email: 'MockUpEmail2',
-    registerDate: 'MockUpRegisterDate2',
-    profileIMG: 'MockUpProfileIMG2',
-    detail: 'MockUpDetail2',
+    name: 'Torza555',
+    email: 'tor2545@gmail.com',
+    registerDate: '26/5/2566',
+    profileIMG: 'เท่',
+    detail: 'สุดยอดเดกเปรตแห่งปี',
   }
-  axios.post('/api/post-data', data)
+  axios.post('/api/test-post-data', data)
   .then(response => {
     console.log('Created document with ID:', response.data.id);
   })
@@ -81,9 +81,9 @@ function App(){
               <Route path="/sign-up" element={<SignUpPageApp/>} />
               <Route path='/sign-in' element={<SignInPageApp/>} />
               <Route path='/home' element={<Home/>} />
-              <Route path='/support' element={<Support/>} />
+              {/* <Route path='/support' element={<Support/>} /> */}
               <Route path='/contributor' element={<FooterContribute/>} />
-
+              <Route path='/test' element={<TestApp/>} />
           </Routes>
       </Router>
     </div>

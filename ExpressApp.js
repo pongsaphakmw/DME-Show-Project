@@ -38,6 +38,17 @@ app.get('/api/test-data', async (req, res) => {
   }
 });
 
+app.post('/api/test-post-data', async (req, res) => {
+  try{
+    const data = req.body
+    const collectionRef = await db.collection('test_data').doc('Tor').set(data);
+  }
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+}})
+
+
 app.post('/api/post-data', async (req, res) => {
   try {
     const data = req.body;
