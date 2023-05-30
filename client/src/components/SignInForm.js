@@ -19,7 +19,7 @@ function SignInForm() {
   const [password, setPassword] = useState('');
   const [csrfToken, setCsrfToken] = useState('');
 
-  useEffect(() => {
+  // useEffect(() => {
     // Fetch the CSRF token from the server
     const fetchCsrfToken = async () => {
       try {
@@ -33,8 +33,8 @@ function SignInForm() {
       }
     };
 
-    fetchCsrfToken();
-  }, []);
+  //   fetchCsrfToken();
+  // }, []);
 
   const handleSignInWithGoogle = async (e) => {
     e.preventDefault();
