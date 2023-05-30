@@ -19,7 +19,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import {BsFillPeopleFill} from "react-icons/bs";
 import Badge from 'react-bootstrap/Badge';
 import{AiFillGoogleCircle} from "react-icons/ai";
-import Footer from './components/Footer';
+import Footter from './components/Footter';
 
 function LandingPageApp() {
   const [expand, setExpand] = useState('sm');
@@ -96,9 +96,16 @@ function LandingPageApp() {
           <Button className="box_signin_google"  variant="outline-dark" type="submit" >
             Sign Out
           </Button>
+          
         </Form>
       </div>
-      <Footer/>
+      <div id="about" className='magin_about' >
+        <p>"about The place that DME students can show their skills also it can be their portfolio. 
+DME students can make money from their product or their service that display on this website." </p>
+      </div>
+
+      
+      <Footter/>
     </div>
   );
 }
