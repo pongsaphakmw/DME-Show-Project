@@ -17,6 +17,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import {BsFillPeopleFill} from "react-icons/bs";
 import Badge from 'react-bootstrap/Badge';
 import{AiFillGoogleCircle} from "react-icons/ai";
+import Footter from './components/Footter';
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -36,6 +37,13 @@ function LandingPageApp() {
         Sign Up
       </Button>
       </div>
+      <div id="about" className='magin_about' >
+        <p>"about The place that DME students can show their skills also it can be their portfolio. 
+DME students can make money from their product or their service that display on this website." </p>
+      </div>
+
+      
+      <Footter/>
     </div>
     </div>
   );

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import 'firebase/auth';
 import Navigation from './NavBar';
+import '../LandingPage.css';
+import './SignInPage.css'
 import SignInForm from './SignInForm';
-import './SignInAndSignUpPage.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
