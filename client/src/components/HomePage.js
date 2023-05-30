@@ -18,7 +18,6 @@ function Home() {
         }
 
         const { token } = stateLocation.state;
-        console.log('token', token);
 
         // Send the token to the server for validation
         const response = await axios.post('/api/auth/check-token', { token });

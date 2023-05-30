@@ -8,17 +8,17 @@ const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
 const csrfProtection = csrf({ cookie: true });
 const session = require('express-session');
-const { randomBytes } = require('crypto');
+const { randomBytes, verify } = require('crypto');
+// const { getAuth } = require('firebase/auth');
 // const cookieSession = require('cookie-session');
 
 
 // Init Firebase
 const serviceAccount = require('./serviceAccountKey.json');
-const { getAuth } = require('firebase/auth');
-
-initializeApp({
+const firebaseApp = initializeApp({
   credential: cert(serviceAccount)
 });
+
 
 const db = getFirestore();
 
@@ -32,7 +32,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: { 
     secure: false,
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 60 * 60 * 24 * 5 * 1000,
    }
 }));
 
@@ -74,6 +74,7 @@ app.get('/api/auth/csrf-token', csrfProtection, (req, res) => {
   // console.log('req.session.csrf', req.session.csrf);
   if (req.session.csrf === undefined) {
     req.session.csrf = randomBytes(100).toString('base64'); // convert random data to a string
+    // console.log('req.session.csrf', req.session.csrf);
     return res.status(200).json({ csrfToken: req.session.csrf });
   }
   res.status(200).json({ csrfToken: req.session.csrf });
@@ -107,6 +108,27 @@ app.post('/api/auth/sign-up', async (req, res) => {
   }
 });
 
+app.post('/api/auth/sign-up-with-google', async (req, res) => {
+  try {
+    const { user } = req.body;
+
+    await db.collection('users').doc(user.uid).set({
+      email: user.email,
+      createdAt: FieldValue.serverTimestamp(),
+      detail: "",
+      name: user.displayName,
+      phone: "",
+      role: "user",
+      profileIMG: user.photoURL,
+    });
+
+    res.json({ message : 'User created successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post('/api/auth/check-user', async (req, res) => {
   try {
     const { email } = req.body;
@@ -117,27 +139,20 @@ app.post('/api/auth/check-user', async (req, res) => {
   }
 });
 
-app.post('/api/auth/sign-in', csrfProtection, async (req, res) => {
+app.post('/api/auth/sign-in', async (req, res) => {
   try {
-    const { user } = req.body;
-    const { uid } = user;
+    const { user, idToken } = req.body;
 
-    if (!uid) {
+    if (user === undefined) {
       return res.status(400).json({ error: 'Invalid user information' });
     }
 
-    if (!req.csrfToken || req.csrfToken() === req.headers['x-csrf-token']) {
-      return res.status(403).send('Invalid CSRF token');
-    }
-
-    const expiresIn = 60 * 60 * 24 * 5 * 1000;
-    const userRecord = await admin.auth().createCustomToken(uid);
-    const token = userRecord;
-
+    const expiresIn = 60 * 60 * 24 * 2 * 1000;
+    
     try {
-      const sessionCookie = await getAuth().createSessionCookie(token, { expiresIn });
+      const sessionCookie = await admin.auth().createSessionCookie(idToken,  { expiresIn: expiresIn } );
 
-      const options = { maxAge: expiresIn, httpOnly: true, secure: true };
+      const options = { maxAge: expiresIn, secure: false };
       res.cookie('session', sessionCookie, options);
       res.end(JSON.stringify({ status: 'success' }));
     } catch (error) {
@@ -153,6 +168,7 @@ app.post('/api/auth/sign-in', csrfProtection, async (req, res) => {
 app.post('/api/auth/check-token', async (req, res) => {
   try {
     const { token } = req.body;
+    // console.log('token', token);
     const decodedToken = await admin.auth().verifyIdToken(token);
     const uid = decodedToken.uid;
     res.json({ uid: uid , verified: true});
