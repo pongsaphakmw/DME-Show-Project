@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Navbar, Nav } from 'react-bootstrap';
 
-function Footter() {
+function Footer() {
   return (
     <Navbar bg="dark" variant="dark" expand="sm">
       <Navbar.Brand href="/">My App</Navbar.Brand>
@@ -20,4 +20,4 @@ function Footter() {
   );
 }
 
-export default Footter;
+export default Footer;

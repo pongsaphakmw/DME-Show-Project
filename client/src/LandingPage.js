@@ -19,7 +19,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import {BsFillPeopleFill} from "react-icons/bs";
 import Badge from 'react-bootstrap/Badge';
 import{AiFillGoogleCircle} from "react-icons/ai";
-import Footter from './components/Footer';
+import Footer from './components/Footer';
 
 function LandingPageApp() {
   const [expand, setExpand] = useState('sm');
@@ -105,7 +105,7 @@ DME students can make money from their product or their service that display on 
       </div>
 
       
-      <Footter/>
+      <Footer/>
     </div>
   );
 }
