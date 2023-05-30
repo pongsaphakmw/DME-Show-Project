@@ -49,6 +49,18 @@ app.post('/api/test-post-data', async (req,res) => {
   }
 });
 
+app.post('/api/support-data', async (req,res) => {
+  try {
+    const data = req.body;
+    data['TimeStamp']=FieldValue.serverTimestamp()
+    const collectionRef =db.collection('support_data').doc(data.email).set(data);
+  }
+  catch (eror) {
+    console.error(error);
+    res.status(500).json({error:'Inrernal server error'})
+  }
+});
+
 app.post('/api/post-data', async (req, res) => {
   try {
     const data = req.body;
