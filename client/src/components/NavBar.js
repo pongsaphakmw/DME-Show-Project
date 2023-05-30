@@ -49,6 +49,7 @@ return (
                   {handleExpand2}
                   
                   <Button  className='button ' variant="outline-dark" href="/sign-in">sign in</Button>
+                  <br/>
                   
                   <Button className='button_signup' variant="outline-danger" href="/sign-up">sign up</Button>
                 </Nav>
