@@ -8,6 +8,8 @@ import SignUpPageApp from './components/SignUpPage';
 import SignInPageApp from './components/SignInPageApp';
 import Home from './components/HomePage';
 import FooterContribute from './components/Contribute';
+import TermandPolicy from './components/Term&PolicyPage';
+
 function MyButton() {
   const data = {
     name: 'Torza555',
@@ -84,6 +86,7 @@ function App(){
               {/* <Route path='/support' element={<Support/>} /> */}
               <Route path='/contributor' element={<FooterContribute/>} />
               <Route path='/test' element={<TestApp/>} />
+              <Route path='/term-policy' element={<TermandPolicy/>} />
           </Routes>
       </Router>
     </div>

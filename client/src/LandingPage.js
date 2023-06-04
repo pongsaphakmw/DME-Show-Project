@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import Navigation from './components/NavBar.js';
-import Footerapp from './components/Footer-cotrubuter';
+import Footerapp from './components/Footer-app';
 import axios from 'axios';
 import './LandingPage.css';
 import SignInForm from './components/SignInForm.js';

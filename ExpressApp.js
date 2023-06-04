@@ -61,9 +61,7 @@ app.post('/api/post-data', async (req, res) => {
   }
 })
 
-app.get('*', (req,res) =>{
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
+
 
 // Cookies Handling
 const csrf = require('csurf');
@@ -167,6 +165,27 @@ app.post('/api/auth/check-token', async (req, res) => {
   }
 });
 
+app.get('/api/term-policy', async (req, res) =>{
+  try{
+    const collectionRef = admin.firestore().collection('term-policy');
+    const snapshot = await collectionRef.get();
+    if (snapshot.empty) {
+      res.json([]);
+    } else{
+      const data = snapshot.docs && snapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
+      res.json(data);
+    }
+    
+  }catch (error){
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error'});
+  }
+});
+
+
+app.get('*', (req,res) =>{
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port);

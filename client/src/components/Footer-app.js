@@ -1,11 +1,9 @@
 import LandingPageApp from "../LandingPage";
 import App from "../App";
 import { Switch, Route } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
-function FooterContribute() {
+function Footerapp() {
     return (
       <Navbar bg="dark" variant="dark" expand="lg">
         <Navbar.Brand href="/">Logo</Navbar.Brand>
@@ -22,4 +20,5 @@ function FooterContribute() {
       </Navbar>
     );
 }
-export default FooterContribute;
+
+export default Footerapp;

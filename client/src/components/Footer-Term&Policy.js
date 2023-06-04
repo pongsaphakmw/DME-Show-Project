@@ -3,9 +3,12 @@ import App from "../App";
 import { Switch, Route } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 
-function Footerapp() {
+
+
+
+function TermPolicy() {
     return (
       <Navbar bg="dark" variant="dark" expand="lg">
         <Navbar.Brand href="/">Logo</Navbar.Brand>
@@ -16,11 +19,12 @@ function Footerapp() {
             <Nav.Link href="/support">Support</Nav.Link>
             <Nav.Link href="/sign-up">Sign up</Nav.Link>
             <Nav.Link href="/contributor">Contributor</Nav.Link>
-            <Nav.Link href="/term&policy">Term & Policy</Nav.Link>
+            <Nav.Link href="/term-policy">Term & Policy</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
     );
 }
+
    
-export default Footerapp;
+export default TermPolicy;
