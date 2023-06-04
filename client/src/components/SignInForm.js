@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import 'firebase/auth';
 import axios from 'axios';
-import { getAuth, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, signInWithCredential } from 'firebase/auth';
 import firebaseApp from './InitFirebase.js';
 import { useNavigate } from 'react-router-dom';
 import{AiFillGoogleCircle} from "react-icons/ai";
 import '../LandingPage.css';
+import './SignInForm.css';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { GoogleAuthProvider } from 'firebase/auth';
@@ -19,13 +20,13 @@ function SignInForm() {
   const [password, setPassword] = useState('');
   const [csrfToken, setCsrfToken] = useState('');
 
-  // useEffect(() => {
+  useEffect(() => {
     // Fetch the CSRF token from the server
     const fetchCsrfToken = async () => {
       try {
         const response = await axios.get('/api/auth/csrf-token');
         const { csrfToken } = response.data;
-        console.log('csrfToken', csrfToken);
+        // console.log('csrfToken', csrfToken);
         // console.log('response', response);
         setCsrfToken(csrfToken);
       } catch (error) {
@@ -33,8 +34,8 @@ function SignInForm() {
       }
     };
 
-  //   fetchCsrfToken();
-  // }, []);
+    fetchCsrfToken();
+  }, []);
 
   const handleSignInWithGoogle = async (e) => {
     e.preventDefault();
@@ -42,15 +43,17 @@ function SignInForm() {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       // const token = credential.accessToken;
       const user = result.user;
-      const idToken = credential.idToken;
-      // console.log('user', user);
-      // console.log('idToken', idToken);
-      // console.log('credential', credential);
+      // navigate('/term-policy', { state: { userCredential: result } });
       if (user !== null) {
-        const fetchFirebaseResponse = axios.post('/api/auth/sign-up-with-google', { user },)
-        .then((response) => {
-          console.log('response', response);
-          navigate('/home', { state: { token: idToken } });
+        const fetchFirebaseResponse = axios.post('/api/auth/sign-in-with-google', { user },)
+        .then(async (response) => {
+          // const userCredential = signInWithCredential(auth, credential);
+          const userCredential = getAuth().currentUser;
+          const idToken = userCredential.getIdToken().then((idToken) => {
+            navigate('/home', { state: { token: idToken } });
+          }).catch((error) => {
+            console.error(error);
+          });
         }
         ).catch((error) => {
           console.error(error);
@@ -122,7 +125,7 @@ function SignInForm() {
                       required />
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Group className="mb-5" controlId="formBasicPassword">
         <Form.Label className="textbox">Password</Form.Label>
         <Form.Control 
                         type="password" 
@@ -132,7 +135,7 @@ function SignInForm() {
                         required/>
         <Form.Text className="textforgotpassword">Forgot your password?</Form.Text>
       </Form.Group>
-      <Button className="box_signin mb-5" variant="danger" type="submit">
+      <Button className="box_signin mb-3" variant="danger" type="submit">
         Sign In
       </Button>
       <div className="layout_lineror">
@@ -140,13 +143,10 @@ function SignInForm() {
         or
         <a className="liner_or"></a>
       </div>
-      <Button className="box_signin_google mb-3 mt-5 "  variant="outline-dark" type="submit" onClick={handleSignInWithGoogle}>
+      <Button className="box_signin_google mb-3 mt-3 "  variant="outline-dark" type="submit" onClick={handleSignInWithGoogle}>
 
         <AiFillGoogleCircle  className='incon_people me-2' />
         sign in with google
-      </Button>
-      <Button className="box_signin_google"  variant="outline-dark" type="submit">
-        Sign Up
       </Button>
     </Form>
 

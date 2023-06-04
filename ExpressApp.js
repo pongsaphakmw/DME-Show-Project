@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const csrfProtection = csrf({ cookie: true });
 const session = require('express-session');
 const { randomBytes, verify } = require('crypto');
+const bodyParser = require('body-parser');
 // const { getAuth } = require('firebase/auth');
 // const cookieSession = require('cookie-session');
 
@@ -26,6 +27,7 @@ const db = getFirestore();
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(express.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(session({
   secret: 'secret',
   resave: false,
@@ -103,8 +105,7 @@ app.get('/api/auth/csrf-token', csrfProtection, (req, res) => {
   res.status(200).json({ csrfToken: req.session.csrf });
 });
 
-
-// Work Section
+// Authentications Section
 
 app.post('/api/auth/sign-up', async (req, res) => {
   try {
@@ -131,10 +132,14 @@ app.post('/api/auth/sign-up', async (req, res) => {
   }
 });
 
-app.post('/api/auth/sign-up-with-google', async (req, res) => {
+app.post('/api/auth/sign-in-with-google', async (req, res) => {
   try {
     const { user } = req.body;
 
+    checkUser = await admin.auth().getUser(user.uid);
+    if (checkUser) {
+      res.json({ message : 'User already exists' });
+    } else {
     await db.collection('users').doc(user.uid).set({
       email: user.email,
       createdAt: FieldValue.serverTimestamp(),
@@ -145,7 +150,8 @@ app.post('/api/auth/sign-up-with-google', async (req, res) => {
       profileIMG: user.photoURL,
     });
 
-    res.json({ message : 'User created successfully' });
+    res.json({ message : 'User created successfully' });}
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
@@ -198,6 +204,23 @@ app.post('/api/auth/check-token', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Term and Policy Section
+app.get('/api/term-policy', async (req, res) => {
+  try {
+    const collectionRef = admin.firestore().collection('term-policy');
+    const snapshot = await collectionRef.get();
+    if (snapshot.empty) {
+      res.json([]);
+    } else {
+      const data = snapshot.docs && snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      res.json(data);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 

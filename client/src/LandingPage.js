@@ -36,6 +36,7 @@ function LandingPageApp() {
       <Button className="box_signup_google"  variant="outline-dark" href="/sign-up" >
         Sign Up
       </Button>
+    </div>
       </div>
       <div id="about" className='magin_about' >
         <p>"about The place that DME students can show their skills also it can be their portfolio. 
@@ -44,7 +45,6 @@ DME students can make money from their product or their service that display on 
 
       
       <Footer/>
-    </div>
     </div>
   );
 }
