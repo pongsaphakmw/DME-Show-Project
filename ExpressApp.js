@@ -99,9 +99,14 @@ app.post('/api/auth/sign-up', async (req, res) => {
       phone: "",
       role: "user",
       profileIMG: "",
+          
     });
 
-    res.json({ message : 'User created successfully' });
+    await db.collection('term-policy').doc('agreement').collection('UID').doc(userRecord.uid).set({
+    });
+    
+
+        res.json({ message : 'User created successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
@@ -187,10 +192,14 @@ app.get('*', (req,res) =>{
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
+
+
+
 const port = process.env.PORT || 3000;
 app.listen(port);
 
 console.log(`App listening on ${port}`);
 console.log('Continue with this link: http://localhost:3000/');
 console.log('Or this link: http://127.0.0.1:3000/');
+
 

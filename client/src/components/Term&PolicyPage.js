@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import TermPolicy from "./Footer-Term&Policy";
 import Navigation from "./NavBar";
 import Footerapp from "./Footer-app";
+import TermsAndPolicies from "./AcceptPolicy";
 
 function TermandPolicy(){
     const [data, setData] = useState([]);
@@ -23,9 +24,11 @@ function TermandPolicy(){
                     <p>
                         {data.map((item) =>(
                             <p>{item.terms}</p>)
+                            
                         )}
                     </p>
                 )}
+            
             </div>
             <Footerapp/>
         </div>
@@ -33,3 +36,4 @@ function TermandPolicy(){
 }
 
 export default TermandPolicy;
+

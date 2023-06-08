@@ -4,13 +4,33 @@ import axios from 'axios';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import firebaseApp from './InitFirebase.js';
 import { useNavigate } from 'react-router-dom';
-
+// import TermsAndPolicies from './AcceptPolicy';
 function SignUpForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
-  
+      const [agreed, setAgreed] = useState(false);
+    
+      const handleAgreementChange = (event) => {
+        setAgreed(event.target.checked);
+      };
+    
+      const handleAgreementSubmit = () => {
+        if (agreed) {
+          fetch('/api/auth/sign-up', {
+            method: 'POST',
+            body: JSON.stringify({ agreed }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+            .then(response => response.json())
+            .catch(error => {
+              console.error(error);
+            });
+        };
+    }
     const handleSignUp = async (e) => {
        e.preventDefault();
 
@@ -80,7 +100,17 @@ function SignUpForm() {
           required
         />
       </div>
-      <button type="submit">Sign Up</button>
+      <div>
+          <label>
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={handleAgreementChange}
+            />
+            I agree to the terms and policies.
+          </label>
+        </div>
+      <button type="submit" disabled={!agreed} >Sign Up</button>
     </form>
     );
   }
