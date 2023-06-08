@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Navbar, Nav } from 'react-bootstrap';
 import './NavBarLandingPage.css';
 import Button from 'react-bootstrap/Button';
+import logo from './image/DMELOGO.svg';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -25,8 +26,9 @@ if (expand){
 return (
   <div> 
   <Navbar expand={expand} className="mb-3">
+    
     <Container fluid>
-      <Navbar.Brand href="/">DME SHOW CASE</Navbar.Brand>
+      <Navbar.Brand href="/"> <img src={logo} alt=''/></Navbar.Brand>
       <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand} ` } />
         <Navbar.Collapse id="basic-navbar-nav">
           <Navbar.Offcanvas

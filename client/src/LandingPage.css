@@ -18,9 +18,103 @@
 .PositionComponent {
     width: 400px;
     height: 527px;
-    margin-left: 340px;
-    margin-top: 210px;
+    margin-left: 100px;
+    margin-top: 10px;
 }
 .magin_about {
-    margin-bottom: 200vh;
+    margin-bottom: 36vh;
+}
+.background_landingpage{
+    background-color:#ffffff;
+ 
+}
+.poster1 {
+  position: absolute ;
+  display: flex;
+  justify-content: center;
+  margin-top:-580px;
+  margin-left: 990px;
+  display: flex;
+}
+.poster2 {
+  position: relative;
+  display: flex;
+  
+  display: flex;
+  justify-content: center;
+  margin-top:-550px;
+  margin-left: 727px;
+}
+.title1{
+  width: 445px;
+  height: 116px;
+  left: 102px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 96px;
+  line-height: 116px;
+  color: #F87777;
+
+}
+.title2 {
+  width: 778px;
+  height: 44px;
+  left: 66px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 36px;
+  line-height: 44px;
+  color: #737373;
+ 
+
+  
+  
+  /* identical to box height */
+
+}
+.about_text1{
+  margin-left: 80px;
+  margin-top:300px;
+  width: 696px;
+  height: 140px;
+
+ 
+  display: flex;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 44px;
+  
+  color: #000000;
+ 
+  
+
+}
+.about_text2{
+  margin-left: 80px;
+  width: 696px;
+  height: 120px;
+
+ 
+  display: flex;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 44px;
+  
+  color: #000000;
+ 
+  
+
+}
+.poster3 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  left: 1270px;
+  top: 1200px;
 }
