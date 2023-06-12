@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import 'firebase/auth';
 import axios from 'axios';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import firebaseApp from './InitFirebase.js';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 import{AiFillGoogleCircle} from "react-icons/ai";
 function SignUpForm() {
+    const navigate = useNavigate();
+    const provider = new GoogleAuthProvider();
+    const auth = getAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const navigate = useNavigate();
   
     const handleSignUp = async (e) => {
        e.preventDefault();
@@ -36,13 +39,11 @@ function SignUpForm() {
       console.log(response.data); // User created successfully
 
       const auth = getAuth();
-      await createUserWithEmailAndPassword(auth, email, password)
-      if (response && response.data) {
-        const { token } = response.data;
-        navigate('/home', { token: token });
-      } else {
-        throw new Error('Invalid response or missing data');
-      }
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const idToken = await userCredential.user.getIdToken();
+
+      // Navigate to the home page and store the user's ID and refresh token in local storage
+      navigate('/home', { state: { token: idToken } });
 
       // Clear the form
       setEmail('');
@@ -51,6 +52,36 @@ function SignUpForm() {
     } catch (error) {
       console.error(error.response.data);
     }
+  };
+
+  const handleSignInWithGoogle = async (e) => {
+    e.preventDefault();
+    signInWithPopup(auth, provider).then((result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      // const token = credential.accessToken;
+      const user = result.user;
+      // navigate('/term-policy', { state: { userCredential: result } });
+      if (user !== null) {
+        const fetchFirebaseResponse = axios.post('/api/auth/sign-in-with-google', { user },)
+        .then(async (response) => {
+          // const userCredential = signInWithCredential(auth, credential);
+          const userCredential = getAuth().currentUser;
+          const idToken = userCredential.getIdToken().then((idToken) => {
+            navigate('/home', { state: { token: idToken } });
+          }).catch((error) => {
+            console.error(error);
+          });
+        }
+        ).catch((error) => {
+          console.error(error);
+        });
+      }
+    }).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.email;
+      const credential = GoogleAuthProvider.credentialFromError(error);
+    });
   };
   
     return (
@@ -85,7 +116,7 @@ function SignUpForm() {
           </Form.Group>
 
           <Button className="box_signin mb-3" variant="danger" type="submit">
-          Agree
+          Sign Up
           </Button>
           <div className="layout_lineror">
             <a className="liner_or"></a>
@@ -93,7 +124,7 @@ function SignUpForm() {
             <a className="liner_or"></a>
           </div>
                  
-          <Button className="box_signin_google mb-3 mt-3 "  variant="outline-dark" type="submit">
+          <Button className="box_signin_google mb-3 mt-3 "  variant="outline-dark" type="submit" onClick={handleSignInWithGoogle}>
            
             <AiFillGoogleCircle  className='incon_people me-2' />
             Sign in with google

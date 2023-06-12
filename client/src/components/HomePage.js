@@ -5,9 +5,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import firebaseApp from './InitFirebase';
 
 function Home() {
-  const [data, setData] = useState([]);
   const navigate = useNavigate();
   const stateLocation = useLocation();
+  const [data, setData] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const checkToken = async () => {
@@ -22,10 +23,15 @@ function Home() {
 
         // Send the token to the server for validation
         const response = await axios.post('/api/auth/check-token', { token });
+        const responseUid = response.data.uid;
 
+        if (!response.data.verified){
+          throw new Error('User not verified');
+        }
+
+        setUser(responseUid);
         // Fetch data from the server
-        const dataResponse = await axios.get('/api/test-data');
-        setData(dataResponse.data);
+        
       } catch (error) {
         console.error(error);
         navigate('/sign-in');
@@ -34,6 +40,14 @@ function Home() {
 
     checkToken();
   }, [stateLocation.state, navigate]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('/api/posts/:postId');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="App">

@@ -11,6 +11,7 @@ import About from './components/AboutPage';
 import Contributor from './components/ContributorPage';
 import Support from './components/SupportPage';
 import TermPolicy from './components/TermPolicyPage';
+import ProfilePage from './components/ProfilePage';
 
 
 function MyButton() {
@@ -91,6 +92,8 @@ function App(){
               <Route path='/contributor' element={<Contributor/>} />
               <Route path='/term-policy' element={<TermPolicy/>} />
               <Route path='/test' element={<TestApp/>} />
+              <Route path='/profile' element={<ProfilePage/>} />
+              <Route path='*' element={<h1>404 Page Not Found</h1>} />
           </Routes>
       </Router>
     </div>

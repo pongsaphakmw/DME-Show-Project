@@ -10,6 +10,7 @@ const csrfProtection = csrf({ cookie: true });
 const session = require('express-session');
 const { randomBytes, verify } = require('crypto');
 const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
 // const { getAuth } = require('firebase/auth');
 // const cookieSession = require('cookie-session');
 
@@ -125,6 +126,54 @@ app.post('/api/auth/sign-up', async (req, res) => {
       profileIMG: "",
     });
 
+    await db.collection('users')
+    .doc(userRecord.uid)
+    .collection('Followers')
+    .doc('static')
+    .set({
+      followers: 0,
+    });
+
+    await db.collection('users')
+    .doc(userRecord.uid)
+    .collection('Following')
+    .doc('static')
+    .set({
+      following: 0,
+    });
+
+    await db.collection('users')
+    .doc(userRecord.uid)
+    .collection('Posts')
+    .doc('static')
+    .set({
+      posts: 0,
+    });
+
+    await db.collection('users')
+    .doc(userRecord.uid)
+    .collection('Saved')
+    .doc('static')
+    .set({
+      saved: 0,
+    });
+
+    await db.collection('users')
+    .doc(userRecord.uid)
+    .collection('Notifications')
+    .doc('static')
+    .set({
+      notifications: 0,
+    });
+
+    await db.collection('users')
+    .doc(userRecord.uid)
+    .collection('Chats')
+    .doc('static')
+    .set({
+      chats: 0,
+    });
+
     res.json({ message : 'User created successfully' });
   } catch (error) {
     console.error(error);
@@ -136,10 +185,12 @@ app.post('/api/auth/sign-in-with-google', async (req, res) => {
   try {
     const { user } = req.body;
 
-    checkUser = await admin.auth().getUser(user.uid);
-    if (checkUser) {
+    checkUser = await db.collection('users').doc(user.uid).get();
+    if (checkUser.exists) {
+      console.log('User already exists');
       res.json({ message : 'User already exists' });
     } else {
+      console.log('Creating new user');
     await db.collection('users').doc(user.uid).set({
       email: user.email,
       createdAt: FieldValue.serverTimestamp(),
@@ -148,6 +199,54 @@ app.post('/api/auth/sign-in-with-google', async (req, res) => {
       phone: "",
       role: "user",
       profileIMG: user.photoURL,
+    });
+
+    await db.collection('users')
+    .doc(user.uid)
+    .collection('Followers')
+    .doc('static')
+    .set({
+      followers: 0,
+    });
+
+    await db.collection('users')
+    .doc(user.uid)
+    .collection('Following')
+    .doc('static')
+    .set({
+      following: 0,
+    });
+
+    await db.collection('users')
+    .doc(user.uid)
+    .collection('Posts')
+    .doc('static')
+    .set({
+      posts: 0,
+    });
+
+    await db.collection('users')
+    .doc(user.uid)
+    .collection('Saved')
+    .doc('static')
+    .set({
+      saved: 0,
+    });
+
+    await db.collection('users')
+    .doc(user.uid)
+    .collection('Notifications')
+    .doc('static')
+    .set({
+      notifications: 0,
+    });
+
+    await db.collection('users')
+    .doc(user.uid)
+    .collection('Chats')
+    .doc('static')
+    .set({
+      chats: 0,
     });
 
     res.json({ message : 'User created successfully' });}
@@ -224,7 +323,24 @@ app.get('/api/term-policy', async (req, res) => {
   }
 });
 
+// Support Section
 
+
+// Post Section
+app.get('/api/posts/:postId', async (req, res) => {
+  try {
+    const randomQuery = db.collection('posts').orderBy('createdAt', 'desc').limit(10);
+    const snapshot = await randomQuery.get();
+    if (snapshot.empty) {
+      res.json([]);
+    }
+    const data = snapshot.docs && snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 app.get('*', (req,res) =>{
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
