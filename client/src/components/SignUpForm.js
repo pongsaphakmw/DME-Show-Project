@@ -16,21 +16,7 @@ function SignUpForm() {
         setAgreed(event.target.checked);
       };
     
-      const handleAgreementSubmit = () => {
-        if (agreed) {
-          fetch('/api/auth/sign-up', {
-            method: 'POST',
-            body: JSON.stringify({ agreed }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-            .then(response => response.json())
-            .catch(error => {
-              console.error(error);
-            });
-        };
-    }
+      
     const handleSignUp = async (e) => {
        e.preventDefault();
 
