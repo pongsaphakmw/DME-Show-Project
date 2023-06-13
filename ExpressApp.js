@@ -11,6 +11,7 @@ const session = require('express-session');
 const { randomBytes, verify } = require('crypto');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 // const { getAuth } = require('firebase/auth');
 // const cookieSession = require('cookie-session');
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: 'secret',
   resave: false,
@@ -327,15 +329,53 @@ app.get('/api/term-policy', async (req, res) => {
 
 
 // Post Section
+// app.param('postId', (req, res, next, postId) => {
+//   const enPostId = crypto.randomUUID();
+//   req.postId = enPostId;
+//   next();
+// });
+
+app.post('/api/post-upload/:postId', async (req, res) => {
+  try {
+    req.params.postId = crypto.randomUUID();
+    const { postId } = req.params;
+    const { post, user } = req.body;
+    const uid = user.uid;
+    const doc = await db.collection('posts').doc(postId).set({
+      context:post,
+      createdAt: FieldValue.serverTimestamp(),
+      likes: 0,
+      comments: 0,
+      postTitle: postId,
+      postIMG: "",
+    });
+
+    await db.collection('users').doc(uid).collection('Posts').doc(postId).set({
+      postId: postId,
+    });
+
+    const static = db.collection('users').doc(uid).collection('Posts').count()
+    await db.collection('users').doc(uid).collection('Posts').doc('static').update({
+      posts: static-1,
+    });
+    res.json({ message : 'Post uploaded successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.get('/api/posts/:postId', async (req, res) => {
   try {
-    const randomQuery = db.collection('posts').orderBy('createdAt', 'desc').limit(10);
-    const snapshot = await randomQuery.get();
-    if (snapshot.empty) {
-      res.json([]);
+    const { postId } = req.params;
+    const doc = await db.collection('posts').doc(postId).get();
+    if (doc.exists) {
+      const data = doc.data();
+      res.json(data);
+    } else {
+      console.log('No such document!');
+      res.json({});
     }
-    const data = snapshot.docs && snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    res.json(data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

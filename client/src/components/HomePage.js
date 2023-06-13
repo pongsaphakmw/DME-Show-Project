@@ -3,6 +3,8 @@ import axios from 'axios';
 import Navigation from './NavBar';
 import { useNavigate, useLocation } from 'react-router-dom';
 import firebaseApp from './InitFirebase';
+import PopupPost from './HomePageComponents/PopupPost';
+import './HomePageComponents/PopupPost.css';
 
 function Home() {
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ function Home() {
         }
 
         const token = stateLocation.state.token;
-        console.log('token', token);
+        // console.log('token', token);
 
         // Send the token to the server for validation
         const response = await axios.post('/api/auth/check-token', { token });
@@ -54,6 +56,8 @@ function Home() {
       <Navigation />
       <header className="App-header">
         <h1>Home</h1>
+      
+      <div className='Body'>
         {data.length === 0 ? (
           <p>No data to display</p>
         ) : (
@@ -65,6 +69,8 @@ function Home() {
             ))}
           </ul>
         )}
+      <PopupPost />
+     </div>
       </header>
     </div>
   );
