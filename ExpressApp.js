@@ -85,8 +85,10 @@ app.get('/api/auth/csrf-token', csrfProtection, (req, res) => {
 
 app.post('/api/auth/sign-up', async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name ,email ,password } = req.body;
+    console.log(name);
     const userRecord = await admin.auth().createUser({
+      name,
       email,
       password,
     });
@@ -95,7 +97,7 @@ app.post('/api/auth/sign-up', async (req, res) => {
       email,
       createdAt: FieldValue.serverTimestamp(),
       detail: "",
-      name: "",
+      name: name,
       phone: "",
       role: "user",
       profileIMG: "",

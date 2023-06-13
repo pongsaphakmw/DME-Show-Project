@@ -15,7 +15,13 @@ function SignUpForm() {
       const handleAgreementChange = (event) => {
         setAgreed(event.target.checked);
       };
-    
+
+      const atIndex = email.indexOf('@');
+      const name = email;
+      if (atIndex !== -1) {
+        name = email.substring(0, atIndex);
+      }
+      
       
     const handleSignUp = async (e) => {
        e.preventDefault();
@@ -35,7 +41,7 @@ function SignUpForm() {
         return;
       }
       
-      const response = await axios.post('/api/auth/sign-up', { email, password });
+      const response = await axios.post('/api/auth/sign-up', {name, email, password });
       console.log(response.data); // User created successfully
 
       const auth = getAuth();
