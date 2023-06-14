@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import 'firebase/auth';
 import Navigation from './NavBar';
 import SignUpForm from './SignUpForm';
-import SignInAndSignUpPage from './SignInAndSignUpPage.css';
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Button from 'react-bootstrap/Button';
 function SignUpPageApp(){
     return (

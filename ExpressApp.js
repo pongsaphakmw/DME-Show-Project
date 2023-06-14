@@ -96,7 +96,6 @@ app.post('/api/post-data', async (req, res) => {
 })
 
 // Cookies Handling
-// app.use(csrfProtection);
 
 app.get('/api/auth/csrf-token', csrfProtection, (req, res) => {
   // console.log('req.session.csrf', req.session.csrf);
@@ -329,11 +328,6 @@ app.get('/api/term-policy', async (req, res) => {
 
 
 // Post Section
-// app.param('postId', (req, res, next, postId) => {
-//   const enPostId = crypto.randomUUID();
-//   req.postId = enPostId;
-//   next();
-// });
 
 app.post('/api/post-upload/:postId', async (req, res) => {
   try {

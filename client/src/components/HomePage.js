@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navigation from './NavBar';
 import { useNavigate, useLocation } from 'react-router-dom';
-import firebaseApp from './InitFirebase';
 import PopupPost from './HomePageComponents/PopupPost';
 import './HomePageComponents/PopupPost.css';
 

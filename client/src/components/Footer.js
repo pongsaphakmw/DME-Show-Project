@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Navbar, Nav } from 'react-bootstrap';
 
 function Footer() {
@@ -10,7 +9,6 @@ function Footer() {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link href="./#about">About</Nav.Link>
-          {/* <Nav.Link href="#about">About</Nav.Link> */}
           <Nav.Link href="/support">Support</Nav.Link>
           <Nav.Link href="/contributor">Contributor</Nav.Link>
           <Nav.Link href="/term-policy">Term & Policy</Nav.Link>

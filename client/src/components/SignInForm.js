@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import 'firebase/auth';
 import axios from 'axios';
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, signInWithCredential } from 'firebase/auth';
-import firebaseApp from './InitFirebase.js';
 import { useNavigate } from 'react-router-dom';
 import{AiFillGoogleCircle} from "react-icons/ai";
 import '../LandingPage.css';
