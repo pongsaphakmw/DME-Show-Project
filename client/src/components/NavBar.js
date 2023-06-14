@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
 import './NavBarLandingPage.css';
 import Button from 'react-bootstrap/Button';
+import logo from './image/DMELOGO.svg';
+import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import {BsFillPeopleFill} from "react-icons/bs";
@@ -11,59 +13,50 @@ function Navigation() {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  const handleSignOut = () => {
-    auth.signOut();
-  };
-
-  let handleExpand2 = expand;
-  if (expand){
-    handleExpand2 =<div className='line_nav'></div>;
-  }
-  return (
-    <div> 
-    <Navbar expand={expand} className="mb-3">
-      <Container fluid>
-        <Navbar.Brand href="/">DME SHOW CASE</Navbar.Brand>
-        <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand} ` } />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Navbar.Offcanvas
-              id={`offcanvasNavbar-expand-${expand}`}
-              aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
-              placement="end"
-              
-              >
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} href="/home">
-                      DME SHOW CASE
-                  </Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                  <Nav className="justify-content-end flex-grow-1 pe-3 ">
-                    <Nav.Link href="#action1"> 
-                    <BsFillPeopleFill className='incon_people'/>
-                    </Nav.Link >
-                    
-                    {handleExpand2}
-                    {user === null ? (
-                      <div>
-                        <Button  className='button ' variant="outline-dark" href="/sign-in">sign in</Button>
-                        
-                        <Button className='button_signup' variant="outline-danger" href="/sign-up">sign up</Button>
-                      </div>
-                    ) : (
-                      <div>
-                        <Button className='button ' variant="outline-dark" href="/" onClick={handleSignOut}>sign out</Button>
-                      </div>
-                    )}
-                    
-                  </Nav>
-                </Offcanvas.Body>
-              </Navbar.Offcanvas>
-            </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </div>
-    );
-  }
+let handleExpand2 = expand;
+if (expand){
+  handleExpand2 =<div className='line_nav'></div>;
+  
+}
+return (
+  <div> 
+  <Navbar expand={expand} className="mb-3">
+    
+    <Container fluid>
+      <Navbar.Brand href="/"> <img src={logo} alt=''/></Navbar.Brand>
+      <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand} ` } />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Offcanvas
+            id={`offcanvasNavbar-expand-${expand}`}
+            aria-labelledby={`offcanvasNavbarLabel-expand-${expand}`}
+            placement="end"
+            
+            >
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`} href="/home">
+                    DME SHOW CASE
+                </Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <Nav className="justify-content-end flex-grow-1 pe-3 ">
+                  <Nav.Link href="#action1"> 
+                  <BsFillPeopleFill className='incon_people'/>
+                  </Nav.Link >
+                  
+                  {handleExpand2}
+                  
+                  <Button  className='button ' variant="outline-dark" href="/sign-in">sign in</Button>
+                  <br/>
+                  
+                  <Button className='button_signup' variant="outline-danger" href="/sign-up">sign up</Button>
+                </Nav>
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+          </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  </div>
+  );
+}
 
 export default Navigation;
