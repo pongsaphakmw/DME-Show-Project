@@ -142,20 +142,19 @@ function SignUpForm() {
             <AiFillGoogleCircle  className='incon_people me-2' />
             Sign in with google
           </Button>
+        <div>
+            <label>
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={handleAgreementChange}
+              />
+              I agree to the terms and policies.
+            </label>
+          </div>
+        <button type="submit" disabled={!agreed} >Sign Up</button>
         </Form>
       </div>
-      <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={agreed}
-              onChange={handleAgreementChange}
-            />
-            I agree to the terms and policies.
-          </label>
-        </div>
-      <button type="submit" disabled={!agreed} >Sign Up</button>
-    </form>
     );
   }
 

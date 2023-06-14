@@ -60,7 +60,6 @@ app.get('/api/test-data', async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 app.post('/api/test-post-data', async (req,res) => {
   try {
     const data = req.body;
@@ -83,18 +82,6 @@ app.post('/api/support-data', async (req,res) => {
     res.status(500).json({error:'Inrernal server error'})
   }
 });
-=======
-app.post('/api/test-post-data', async (req, res) => {
-  try{
-    const data = req.body
-    const collectionRef = await db.collection('test_data').doc('Tor').set(data);
-  }
-  catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-}})
-
->>>>>>> origin/Torja
 
 app.post('/api/post-data', async (req, res) => {
   try {
@@ -108,11 +95,6 @@ app.post('/api/post-data', async (req, res) => {
   }
 })
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/Torja
 // Cookies Handling
 
 app.get('/api/auth/csrf-token', csrfProtection, (req, res) => {
@@ -148,7 +130,6 @@ app.post('/api/auth/sign-up', async (req, res) => {
           
     });
 
-<<<<<<< HEAD
     await db.collection('users')
     .doc(userRecord.uid)
     .collection('Followers')
@@ -198,13 +179,6 @@ app.post('/api/auth/sign-up', async (req, res) => {
     });
 
     res.json({ message : 'User created successfully' });
-=======
-    await db.collection('term-policy').doc('agreement').collection('UID').doc(userRecord.uid).set({
-    });
-    
-
-        res.json({ message : 'User created successfully' });
->>>>>>> origin/Torja
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
@@ -336,19 +310,13 @@ app.post('/api/auth/check-token', async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
 // Term and Policy Section
 app.get('/api/term-policy', async (req, res) => {
   try {
-=======
-app.get('/api/term-policy', async (req, res) =>{
-  try{
->>>>>>> origin/Torja
     const collectionRef = admin.firestore().collection('term-policy');
     const snapshot = await collectionRef.get();
     if (snapshot.empty) {
       res.json([]);
-<<<<<<< HEAD
     } else {
       const data = snapshot.docs && snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       res.json(data);
@@ -410,29 +378,9 @@ app.get('/api/posts/:postId', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-=======
-    } else{
-      const data = snapshot.docs && snapshot.docs.map(doc => ({ id: doc.id, ...doc.data()}));
-      res.json(data);
-    }
-    
-  }catch (error){
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error'});
-  }
-});
-
-
->>>>>>> origin/Torja
 app.get('*', (req,res) =>{
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/Torja
 
 const port = process.env.PORT || 3000;
 app.listen(port);
