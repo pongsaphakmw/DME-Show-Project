@@ -13,14 +13,16 @@ import Support from './components/SupportPage';
 import TermPolicy from './components/TermPolicyPage';
 // import ProfilePage from './components/ProfilePage';
 
+import FooterContribute from './components/Contribute';
+import TermandPolicy from './components/Term&PolicyPage';
 
 function MyButton() {
   const data = {
-    name: 'MockUpName2',
-    email: 'MockUpEmail2',
-    registerDate: 'MockUpRegisterDate2',
-    profileIMG: 'MockUpProfileIMG2',
-    detail: 'MockUpDetail2',
+    name: 'Torza555',
+    email: 'tor2545@gmail.com',
+    registerDate: '26/5/2566',
+    profileIMG: 'เท่',
+    detail: 'สุดยอดเดกเปรตแห่งปี',
   }
   axios.post('/api/test-post-data', data)
   .then(response => {
