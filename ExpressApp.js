@@ -111,10 +111,9 @@ app.get('/api/auth/csrf-token', csrfProtection, (req, res) => {
 
 app.post('/api/auth/sign-up', async (req, res) => {
   try {
-    const { name ,email ,password } = req.body;
-    console.log(name);
+    const { email ,password } = req.body;
+    const name = email.split('@')[0];
     const userRecord = await admin.auth().createUser({
-      name,
       email,
       password,
     });
@@ -128,6 +127,9 @@ app.post('/api/auth/sign-up', async (req, res) => {
       role: "user",
       profileIMG: "",
           
+    });
+
+    await db.collection('term-policy').doc('agreement').collection('UID').doc(userRecord.uid).set({
     });
 
     await db.collection('users')

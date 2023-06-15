@@ -23,11 +23,7 @@ function SignUpForm() {
       setAgreed(event.target.checked);
     };
 
-    const atIndex = email.indexOf('@');
-    const name = email;
-    if (atIndex !== -1) {
-      name = email.substring(0, atIndex);
-    }
+    
       
       
     const handleSignUp = async (e) => {
@@ -48,7 +44,7 @@ function SignUpForm() {
         return;
       }
       
-      const response = await axios.post('/api/auth/sign-up', {name, email, password });
+      const response = await axios.post('/api/auth/sign-up', {email, password });
       console.log(response.data); // User created successfully
 
       const auth = getAuth();
@@ -146,17 +142,7 @@ function SignUpForm() {
             <AiFillGoogleCircle  className='incon_people me-2' />
             Sign in with google
           </Button>
-        {/* <div>
-            <label>
-              <input
-                type="checkbox"
-                checked={agreed}
-                onChange={handleAgreementChange}
-              />
-              I agree to the terms and policies.
-            </label>
-          </div>
-        <button type="submit" disabled={!agreed} >Sign Up</button> */}
+        
         </Form>
       </div>
     );
