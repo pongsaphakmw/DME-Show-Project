@@ -329,6 +329,24 @@ app.get('/api/term-policy', async (req, res) => {
 
 // Support Section
 
+app.post('/api/support', async (req, res) => {
+  try {
+    const { name, email, message, subject } = req.body;
+    const doc = await db.collection('support').doc(email).set({
+      name: name,
+      email: email,
+      context: message,
+      title: subject,
+      Timestamp: FieldValue.serverTimestamp(),
+    });
+
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 // Post Section
 

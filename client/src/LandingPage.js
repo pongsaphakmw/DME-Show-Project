@@ -41,7 +41,7 @@ function LandingPageApp() {
         </div>
 
 
-        <Footter/>
+        <Footer/>
        
     </div>
   );

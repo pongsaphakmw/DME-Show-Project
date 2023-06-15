@@ -13,6 +13,10 @@ function Navigation() {
   const auth = getAuth();
   const user = auth.currentUser;
 
+  const handleSignOut = () => {
+    auth.signOut();
+  }
+
 let handleExpand2 = expand;
 if (expand){
   handleExpand2 =<div className='line_nav'></div>;
@@ -44,11 +48,18 @@ return (
                   </Nav.Link >
                   
                   {handleExpand2}
+                  {user === null ? (
+                      <div>
+                        <Button  className='button ' variant="outline-dark" href="/sign-in">sign in</Button>
+                        
+                        <Button className='button_signup' variant="outline-danger" href="/sign-up">sign up</Button>
+                      </div>
+                    ) : (
+                      <div>
+                        <Button className='button ' variant="outline-dark" href="/" onClick={handleSignOut}>sign out</Button>
+                      </div>
+                    )}
                   
-                  <Button  className='button ' variant="outline-dark" href="/sign-in">sign in</Button>
-                  <br/>
-                  
-                  <Button className='button_signup' variant="outline-danger" href="/sign-up">sign up</Button>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

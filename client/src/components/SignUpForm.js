@@ -128,7 +128,11 @@ function SignUpForm() {
                                required/>
           </Form.Group>
 
-          <Button className="box_signin mb-3" variant="danger" type="submit">
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check type="checkbox" label="I agree to the terms and policies." onChange={handleAgreementChange} checked={agreed} />
+          </Form.Group>
+
+          <Button className="box_signin mb-3" variant="danger" type="submit" disabled={!agreed}>
           Sign Up
           </Button>
           <div className="layout_lineror">
@@ -142,7 +146,7 @@ function SignUpForm() {
             <AiFillGoogleCircle  className='incon_people me-2' />
             Sign in with google
           </Button>
-        <div>
+        {/* <div>
             <label>
               <input
                 type="checkbox"
@@ -152,7 +156,7 @@ function SignUpForm() {
               I agree to the terms and policies.
             </label>
           </div>
-        <button type="submit" disabled={!agreed} >Sign Up</button>
+        <button type="submit" disabled={!agreed} >Sign Up</button> */}
         </Form>
       </div>
     );
