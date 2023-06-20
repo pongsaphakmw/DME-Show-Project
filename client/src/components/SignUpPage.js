@@ -4,7 +4,12 @@ import Navigation from './NavBar';
 import SignUpForm from './SignUpForm';
 import TermsAndPolicies from './AcceptPolicy';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 function SignUpPageApp(){
+    const navigate = useNavigate();
+    const signIn = async () => {
+        navigate('/sign-in');
+    };
     return (
         <div className='Page_Signin'>
             <Navigation />
@@ -12,7 +17,7 @@ function SignUpPageApp(){
             <p className='container'>
             <SignUpForm />
             <h2 className='PositinFooterText text-center'>Already have an account  
-                <Button className='textbutton ' variant='link' style={{ textDecoration: 'none' }}>
+                <Button className='textbutton ' variant='link' style={{ textDecoration: 'none' }} onClick={signIn}>
                 Sign in
                 </Button>
             </h2>

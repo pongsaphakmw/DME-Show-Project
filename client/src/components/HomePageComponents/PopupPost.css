@@ -31,3 +31,10 @@
     border-radius: 18px;
     border: 1px solid #cfcece;
   }
+  .preview {
+    width: 100px;
+    height: 150px;
+    padding: 10px 5px;
+    margin: auto;
+    text-align: center;
+  }

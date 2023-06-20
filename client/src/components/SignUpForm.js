@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'firebase/auth';
 import axios from 'axios';
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import firebaseApp from './InitFirebase.js';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -16,19 +16,11 @@ function SignUpForm() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-  
     const [agreed, setAgreed] = useState(false);
   
     const handleAgreementChange = (event) => {
       setAgreed(event.target.checked);
     };
-
-    const atIndex = email.indexOf('@');
-    const name = email;
-    if (atIndex !== -1) {
-      name = email.substring(0, atIndex);
-    }
-      
       
     const handleSignUp = async (e) => {
        e.preventDefault();
@@ -39,7 +31,6 @@ function SignUpForm() {
     }
 
     try {
-      // Make a POST request to the sign-up endpoint of your Express.js backend
       const checkUserResponse = await axios.post('/api/auth/check-user', { email });
       const  userExists  = checkUserResponse.data;
 
@@ -48,14 +39,15 @@ function SignUpForm() {
         return;
       }
       
-      const response = await axios.post('/api/auth/sign-up', {name, email, password });
+      const response = await axios.post('/api/auth/sign-up', { email, password });
       console.log(response.data); // User created successfully
 
       const auth = getAuth();
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
       const idToken = await userCredential.user.getIdToken();
 
       // Navigate to the home page and store the user's ID and refresh token in local storage
+      
       navigate('/home', { state: { token: idToken } });
 
       // Clear the form
@@ -63,7 +55,7 @@ function SignUpForm() {
       setPassword('');
       setConfirmPassword('');
     } catch (error) {
-      console.error(error.response.data);
+      console.error(error);
     }
   };
 
@@ -128,9 +120,11 @@ function SignUpForm() {
                                required/>
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="I agree to the terms and policies." onChange={handleAgreementChange} checked={agreed} />
+          <Form.Group className="mb-3" controlId="formBasicCheckbox" style={{ display: 'inline-flex', alignItems: 'center' }}>
+          <Form.Check type="checkbox" label="I agree to the" onChange={handleAgreementChange} checked={agreed} style={{ marginRight: '5px' }} />
+            <a href="/term-policy" className="term_policy" target="_blank" style={{ display: 'inline-block' }}>Terms of Service and Privacy Policy</a>
           </Form.Group>
+
 
           <Button className="box_signin mb-3" variant="danger" type="submit" disabled={!agreed}>
           Sign Up
@@ -146,17 +140,6 @@ function SignUpForm() {
             <AiFillGoogleCircle  className='incon_people me-2' />
             Sign in with google
           </Button>
-        {/* <div>
-            <label>
-              <input
-                type="checkbox"
-                checked={agreed}
-                onChange={handleAgreementChange}
-              />
-              I agree to the terms and policies.
-            </label>
-          </div>
-        <button type="submit" disabled={!agreed} >Sign Up</button> */}
         </Form>
       </div>
     );

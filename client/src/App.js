@@ -13,9 +13,6 @@ import Support from './components/SupportPage';
 import TermPolicy from './components/TermPolicyPage';
 // import ProfilePage from './components/ProfilePage';
 
-import FooterContribute from './components/Contribute';
-import TermandPolicy from './components/Term&PolicyPage';
-
 function MyButton() {
   const data = {
     name: 'Torza555',

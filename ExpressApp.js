@@ -12,6 +12,8 @@ const { randomBytes, verify } = require('crypto');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const multer = require('multer');
+
 // const { getAuth } = require('firebase/auth');
 // const cookieSession = require('cookie-session');
 
@@ -19,7 +21,8 @@ const crypto = require('crypto');
 // Init Firebase
 const serviceAccount = require('./serviceAccountKey.json');
 const firebaseApp = initializeApp({
-  credential: cert(serviceAccount)
+  credential: cert(serviceAccount),
+  storageBucket:'gs://dme-social-project.appspot.com/',
 });
 
 
@@ -111,10 +114,9 @@ app.get('/api/auth/csrf-token', csrfProtection, (req, res) => {
 
 app.post('/api/auth/sign-up', async (req, res) => {
   try {
-    const { name ,email ,password } = req.body;
-    console.log(name);
+    const { email ,password } = req.body;
+    const name = email.split('@')[0];
     const userRecord = await admin.auth().createUser({
-      name,
       email,
       password,
     });
@@ -129,6 +131,9 @@ app.post('/api/auth/sign-up', async (req, res) => {
       profileIMG: "",
           
     });
+
+    await admin.auth().setCustomUserClaims(userRecord.uid, { role: 'user' });
+    await admin.auth().updateUser(userRecord.uid, { displayName: name });
 
     await db.collection('users')
     .doc(userRecord.uid)
@@ -176,6 +181,14 @@ app.post('/api/auth/sign-up', async (req, res) => {
     .doc('static')
     .set({
       chats: 0,
+    });
+
+    await db.collection('term-policy')
+    .doc('agreement')
+    .collection('UID')
+    .doc(userRecord.uid)
+    .set({
+      agreement: true,
     });
 
     res.json({ message : 'User created successfully' });
@@ -355,6 +368,7 @@ app.post('/api/post-upload/:postId', async (req, res) => {
     req.params.postId = crypto.randomUUID();
     const { postId } = req.params;
     const { post, user } = req.body;
+    // console.log(user);
     const uid = user.uid;
     const doc = await db.collection('posts').doc(postId).set({
       context:post,
@@ -370,8 +384,10 @@ app.post('/api/post-upload/:postId', async (req, res) => {
     });
 
     const static = db.collection('users').doc(uid).collection('Posts').count()
+    const staticData = await static.get();
+    console.log('static', staticData);
     await db.collection('users').doc(uid).collection('Posts').doc('static').update({
-      posts: static-1,
+      posts: staticData - 1,
     });
     res.json({ message : 'Post uploaded successfully' });
   } catch (error) {
@@ -396,6 +412,44 @@ app.get('/api/posts/:postId', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// Upload section
+
+const upload = multer();
+
+app.post('/api/img-upload', upload.array('selectedFiles'), async (req, res) => {
+  try {
+    const { user, 'user.uid': uid } = req.body;
+    const files = req.files; // Access the uploaded files
+    console.log('files', files);
+    console.log('request', req.body);
+    // const uid = user.uid;
+    const bucket = admin.storage().bucket();
+    console.log('uid', uid);
+
+    // Process each file
+    for (const file of files) {
+      const fileName = `posts/${uid}/${file.originalname}`;
+      const blob = bucket.file(fileName);
+      const blobWriter = blob.createWriteStream();
+      blobWriter.on('error', err => {
+        console.error(err);
+      });
+      blobWriter.on('finish', async () => {
+        const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
+        console.log(publicUrl);
+      });
+      blobWriter.end(file.buffer);
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 app.get('*', (req,res) =>{
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });

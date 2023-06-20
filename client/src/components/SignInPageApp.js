@@ -4,9 +4,13 @@ import Navigation from './NavBar';
 import './SignInAndSignUpPage.css'
 import SignInForm from './SignInForm';
 import Button from 'react-bootstrap/Button';
-
+import { useNavigate } from 'react-router-dom';
 
 function SignInPageApp(){
+    const navigate = useNavigate();
+    const signUp = async () => {
+        navigate('/sign-up');
+    };
     return (
         <div className='Page_Signin'>
             <Navigation />
@@ -17,7 +21,7 @@ function SignInPageApp(){
             
                 <SignInForm />
                 <h2 className='PositinFooterText text-center'>Don’t have an account?  
-                <Button className='textbutton ' variant='link' style={{ textDecoration: 'none' }}>
+                <Button className='textbutton ' variant='link' style={{ textDecoration: 'none' }} onClick={signUp}>
                 Join Now
                 </Button>
             </h2>
