@@ -27,6 +27,7 @@
 .background_landingpage{
     background-color:#ffffff;
  
+  
 }
 .poster1 {
   position: absolute ;
@@ -67,12 +68,7 @@
   font-size: 36px;
   line-height: 44px;
   color: #737373;
- 
-
-  
-  
-  /* identical to box height */
-
+ /* identical to box height */
 }
 .about_text1{
   margin-left: 80px;
@@ -89,9 +85,6 @@
   line-height: 44px;
   
   color: #000000;
- 
-  
-
 }
 .about_text2{
   margin-left: 80px;
@@ -107,9 +100,6 @@
   line-height: 44px;
   
   color: #000000;
- 
-  
-
 }
 .poster3 {
   position: absolute;
