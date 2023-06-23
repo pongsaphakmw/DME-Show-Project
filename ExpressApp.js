@@ -20,6 +20,7 @@ const multer = require('multer');
 
 // Init Firebase
 const serviceAccount = require('./serviceAccountKey.json');
+const { error } = require('console');
 const firebaseApp = initializeApp({
   credential: cert(serviceAccount),
   storageBucket:'gs://dme-social-project.appspot.com/',
@@ -375,7 +376,7 @@ app.post('/api/post-upload/:postId', async (req, res) => {
       createdAt: FieldValue.serverTimestamp(),
       likes: 0,
       comments: 0,
-      postTitle: postId,
+      postOwner: uid,
       postIMG: "",
     });
 
@@ -389,7 +390,7 @@ app.post('/api/post-upload/:postId', async (req, res) => {
     await db.collection('users').doc(uid).collection('Posts').doc('static').update({
       posts: staticData - 1,
     });
-    res.json({ message : 'Post uploaded successfully' });
+    res.json({ message : 'Post uploaded successfully', postId });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
@@ -419,7 +420,8 @@ const upload = multer();
 
 app.post('/api/img-upload', upload.array('selectedFiles'), async (req, res) => {
   try {
-    const { user, 'user.uid': uid } = req.body;
+    const postIMGes = [];
+    const { user, 'user.uid': uid, postId } = req.body;
     const files = req.files; // Access the uploaded files
     console.log('files', files);
     console.log('request', req.body);
@@ -429,7 +431,7 @@ app.post('/api/img-upload', upload.array('selectedFiles'), async (req, res) => {
 
     // Process each file
     for (const file of files) {
-      const fileName = `posts/${uid}/${file.originalname}`;
+      const fileName = `posts/${uid}/${postId}/${file.originalname}`;
       const blob = bucket.file(fileName);
       const blobWriter = blob.createWriteStream();
       blobWriter.on('error', err => {
@@ -437,10 +439,15 @@ app.post('/api/img-upload', upload.array('selectedFiles'), async (req, res) => {
       });
       blobWriter.on('finish', async () => {
         const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
-        console.log(publicUrl);
+        postIMGes.push(publicUrl);
+        console.log('pushing', postIMGes);
+        await db.collection('posts').doc(postId).update({
+          postIMG: postIMGes,
+        })
       });
       blobWriter.end(file.buffer);
     }
+
 
     res.json({ success: true });
   } catch (error) {

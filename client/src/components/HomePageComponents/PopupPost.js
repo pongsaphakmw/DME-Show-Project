@@ -45,10 +45,13 @@ function PopupPost() {
           }
     
         const response = await axios.post('/api/post-upload/:postId', { post, user });
+        console.log('postId', response.data.postId);
+        formData.append('postId',response.data.postId);
         const imgResponse = await axios.post('/api/img-upload', formData,{
         headers:{
             'Content-Type': 'multipart/form-data'
         }});
+        
     
         console.log('form data', formData.getAll('selectedFile'));
     } catch (error) {

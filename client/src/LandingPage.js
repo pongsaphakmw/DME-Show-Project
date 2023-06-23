@@ -32,8 +32,10 @@ function LandingPageApp() {
       
       </div>
       </div>
-                <img src={poster2} alt='' className ='poster2'/>
-               <img src={poster1} alt='' className ='poster1'/>
+      <div className='allPoster'>
+        <img src={poster2} alt='' className ='poster2'/>
+        <img src={poster1} alt='' className ='poster1'/>
+      </div>
         <div id="about" className='magin_about' >
           <p1 className='about_text1 '>"The place that DME students can show their skills also it can be their portfolio. " </p1>
           <p2 className='about_text2'>"DME students can make money from their product or their service that display on this website." </p2>
