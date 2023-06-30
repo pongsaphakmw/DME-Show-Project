@@ -19,8 +19,8 @@ function PopupPost() {
     const user = getAuth().currentUser;
 
     useEffect(() => {
-        if (!selectedFile) {
-          setPreview(undefined);
+        if (!selectedFile || selectedFile.length === 0) {
+          setPreview([]);
           return;
         }
       
@@ -40,10 +40,14 @@ function PopupPost() {
         const formData = new FormData();
         formData.append('post', post);
         formData.append('user.uid', user.uid);
+        if (!selectedFile || selectedFile.length === 0) {
+            console.log('no file');
+          }
+        else {
         for (let i = 0; i < selectedFile.length; i++) {
             formData.append('selectedFiles', selectedFile[i]);
           }
-    
+        }
         const response = await axios.post('/api/post-upload/:postId', { post, user });
         console.log('postId', response.data.postId);
         formData.append('postId',response.data.postId);
@@ -60,15 +64,27 @@ function PopupPost() {
 
     handleClose();
 }
+
+const removePreview = index => {
+    const updatedSelectedFile = [...selectedFile];
+    updatedSelectedFile.splice(index, 1);
+    setSelectedFile(updatedSelectedFile);
+  
+    const updatedPreview = [...preview];
+    updatedPreview.splice(index, 1);
+    setPreview(updatedPreview);
+  };
     
-    const onSelectFile = e => {
+const onSelectFile = e => {
     if (!e.target.files || e.target.files.length === 0) {
-        setSelectedFile(undefined);
+        setSelectedFile([]);
+        setPreview([]);
         return;
     }
-    // console.log(Array.from(e.target.files));
-    setSelectedFile(Array.from(e.target.files));
-    };
+  
+    const filesArray = Array.from(e.target.files);
+    setSelectedFile(filesArray);
+  };
 
     return (
         <div>
@@ -85,7 +101,12 @@ function PopupPost() {
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Control as="textarea" rows={3} placeholder="What's on your mind?" onChange={(e) => setPost(e.target.value)} />
                         </Form.Group>
-                        { selectedFile &&  <img src={preview} alt="preview" className="preview" /> }
+                        {preview && preview.map((objectUrl, index) => (
+                            <div key={objectUrl} className="preview-container">
+                                <img src={objectUrl} alt="Preview" className="preview" />
+                                <button type="button" onClick={() => removePreview(index)}>Remove</button>
+                            </div>
+                        ))}
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -100,7 +121,12 @@ function PopupPost() {
                             <Form>
                                 <Form.Group controlId="formFileMultiple" className="mb-3">
                                     <Form.Control type="file" multiple onChange={onSelectFile} />
-                                    { selectedFile && <img src={preview} alt="preview" className="preview" /> }
+                                    {preview && preview.map((objectUrl, index) => (
+                                        <div key={objectUrl} className="preview-container">
+                                            <img src={objectUrl} alt="Preview" className="preview" />
+                                            <button type="button" onClick={() => removePreview(index)}>Remove</button>
+                                        </div>
+                                    ))}
                                 </Form.Group>
                             </Form>
                         </Modal.Body>

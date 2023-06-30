@@ -17,17 +17,27 @@ const multer = require('multer');
 // const { getAuth } = require('firebase/auth');
 // const cookieSession = require('cookie-session');
 
+const createPersistentDownloadUrl = (bucket, pathToFile, downloadToken) => {
+  return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodeURIComponent(
+    pathToFile
+  )}?alt=media&token=${downloadToken}`;
+};
 
 // Init Firebase
 const serviceAccount = require('./serviceAccountKey.json');
 const { error } = require('console');
+const { Storage } = require('@google-cloud/storage');
 const firebaseApp = initializeApp({
   credential: cert(serviceAccount),
-  storageBucket:'gs://dme-social-project.appspot.com/',
+  storageBucket:'dme-social-project.appspot.com',
 });
 
 
 const db = getFirestore();
+const storage = new Storage({
+  projectId: 'dme-social-project',
+  keyFilename: './serviceAccountKey.json',
+});
 
 // Setup Middleware Express App
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -371,6 +381,11 @@ app.post('/api/post-upload/:postId', async (req, res) => {
     const { post, user } = req.body;
     // console.log(user);
     const uid = user.uid;
+    const userRef = db.collection('users').doc(uid);
+    const userDoc = await userRef.get();
+    const userData = userDoc.data();
+    const userImg = userData.profileIMG;
+    const userName = userData.name;
     const doc = await db.collection('posts').doc(postId).set({
       context:post,
       createdAt: FieldValue.serverTimestamp(),
@@ -378,6 +393,8 @@ app.post('/api/post-upload/:postId', async (req, res) => {
       comments: 0,
       postOwner: uid,
       postIMG: "",
+      postOwnerIMG: userImg,
+      postOwnerName: userName,
     });
 
     await db.collection('users').doc(uid).collection('Posts').doc(postId).set({
@@ -386,9 +403,10 @@ app.post('/api/post-upload/:postId', async (req, res) => {
 
     const static = db.collection('users').doc(uid).collection('Posts').count()
     const staticData = await static.get();
-    console.log('static', staticData);
+    const data = staticData.data();
+    // console.log('static', data);
     await db.collection('users').doc(uid).collection('Posts').doc('static').update({
-      posts: staticData - 1,
+      posts: data.count - 1,
     });
     res.json({ message : 'Post uploaded successfully', postId });
   } catch (error) {
@@ -414,6 +432,36 @@ app.get('/api/posts/:postId', async (req, res) => {
   }
 });
 
+app.get('/api/posts', async (req, res) => {
+  try {
+    const collectionRef = db.collection('posts');
+    const randomSnapshot = await collectionRef.orderBy('createdAt', 'desc').limit(3).get();
+    const data = randomSnapshot.docs && randomSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.get('/api/post-owner-data', async (req, res) =>{
+  try{
+    const { postOwnerUid } = req.body
+    const doc = await db.collection('users').doc(postOwnerUid).get();
+    if (doc.exists) {
+      const data = doc.data();
+      res.json(data);
+    }
+    else {
+      res.json({ message: 'No such document!' });
+    }
+  } catch (error){
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' })
+  }
+})
+
+
 // Upload section
 
 const upload = multer();
@@ -423,11 +471,11 @@ app.post('/api/img-upload', upload.array('selectedFiles'), async (req, res) => {
     const postIMGes = [];
     const { user, 'user.uid': uid, postId } = req.body;
     const files = req.files; // Access the uploaded files
-    console.log('files', files);
+    const bucket = storage.bucket('dme-social-project.appspot.com');
+    // console.log('files', files);
     console.log('request', req.body);
     // const uid = user.uid;
-    const bucket = admin.storage().bucket();
-    console.log('uid', uid);
+    // console.log('uid', uid);
 
     // Process each file
     for (const file of files) {
@@ -438,7 +486,10 @@ app.post('/api/img-upload', upload.array('selectedFiles'), async (req, res) => {
         console.error(err);
       });
       blobWriter.on('finish', async () => {
-        const publicUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURI(blob.name)}?alt=media`;
+        // const publicUrl = createPersistentDownloadUrl(bucket.name, blob.name,);
+        const metadata = await blob.getMetadata();
+        console.log('metadata', metadata);
+        const publicUrl = metadata[0].mediaLink;
         postIMGes.push(publicUrl);
         console.log('pushing', postIMGes);
         await db.collection('posts').doc(postId).update({

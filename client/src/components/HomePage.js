@@ -4,6 +4,7 @@ import Navigation from './NavBar';
 import { useNavigate, useLocation } from 'react-router-dom';
 import PopupPost from './HomePageComponents/PopupPost';
 import './HomePageComponents/PopupPost.css';
+import PostData from './HomePageComponents/PostData';
 
 function Home() {
   const navigate = useNavigate();
@@ -44,11 +45,19 @@ function Home() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('/api/posts/:postId');
+      const response = await axios.get('/api/posts');
+      setData(response.data);
     } catch (error) {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+    return () => {
+      setData([]);
+    };
+  }, []);
 
   return (
     <div className="App">
@@ -57,18 +66,19 @@ function Home() {
         <h1>Home</h1>
       
       <div className='Body'>
-        {data.length === 0 ? (
+        {/* {data.length === 0 ? (
           <p>No data to display</p>
         ) : (
           <ul>
             {data.map((item) => (
               <li key={item.id}>
-                {item.name} {item.email}
+                {item.postOwner} {item.context}
               </li>
             ))}
           </ul>
-        )}
+        )} */}
       <PopupPost />
+      <PostData />
      </div>
       </header>
     </div>
