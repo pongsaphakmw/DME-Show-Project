@@ -25,6 +25,7 @@
     margin-bottom: 36vh;
 }
 .background_landingpage{
+
     background-color:#ffffff;
  
   
@@ -36,8 +37,9 @@
 }
 
 .poster1 {
-  position: absolute ;
+  position: relative;
   display: flex;
+  float: right;
   justify-content: center;
   margin-top:-580px;
   margin-left: 990px;
@@ -46,10 +48,9 @@
 .poster2 {
   position: relative;
   display: flex;
-  
-  display: flex;
+  float: right;
   justify-content: center;
-  margin-top:-550px;
+  margin-top:-560px;
   margin-left: 727px;
 }
 .title1{
